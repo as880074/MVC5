@@ -75,7 +75,7 @@ namespace Northwind_CRUD.Controllers
             return View();
 
         }
-        public ActionResult Delete(int? id=1)
+        public ActionResult Delete(int? id = 1)
         {
             if (id == null)
             {   // 沒有輸入編號（id），就會報錯 - Bad Request
@@ -100,10 +100,11 @@ namespace Northwind_CRUD.Controllers
         {
             if (ModelState.IsValid)   // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
             {
-                訂貨主檔 ut = _db.訂貨主檔s.Find(id);
-                _db.訂貨主檔s.Remove(ut);
+                訂貨主檔 od = _db.訂貨主檔s.Find(id);
+                _db.訂貨主檔s.Remove(od);
+                訂貨明細 odetails = _db.訂貨明細s.Find(id);
+                _db.訂貨明細s.Remove(odetails);
                 _db.SaveChanges();
-
                 //return Content(" 刪除一筆記錄，成功！");    // 刪除成功後，出現訊息（字串）。
                 return RedirectToAction("List");
             }
@@ -114,7 +115,64 @@ namespace Northwind_CRUD.Controllers
                 return View();   // 將錯誤訊息，返回並呈現在「刪除」的檢視畫面上
             }
         }
+        public ActionResult Edit(int? id)    // 網址 
+        {
+            if (id == null)
+            {   // 沒有輸入文章編號（ID），就會報錯 - Bad Request
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            訂貨主檔 od = _db.訂貨主檔s.Find(id);
 
 
+            List<SelectListItem> CustomerID = new List<SelectListItem>();
+
+
+            foreach (var m in _db.客戶s)
+            {
+                var SelectedID = false;
+                if (m.客戶編號 == od.客戶編號)
+                    SelectedID = true;
+                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號 , Selected = SelectedID});
+            }
+            ViewData["客戶編號"] = CustomerID;
+            List<SelectListItem> EmployeeID = new List<SelectListItem>();
+            foreach (var m in _db.員工s)
+            {
+                var SelectedID = false;
+                if (m.員工編號 == od.員工編號)
+                    SelectedID = true;
+                EmployeeID.Add(new SelectListItem { Text = m.姓名.ToString(), Value = m.員工編號.ToString(), Selected = SelectedID });
+            }
+            ViewData["員工編號"] = EmployeeID;
+
+
+            return View(od);   // 把這一筆記錄呈現出來。   
+        }
+
+
+        //== 修改（更新），回寫資料庫 ===============
+          [HttpPost]
+          [ValidateAntiForgeryToken]   // 避免 CSRF攻擊，
+
+        //public ActionResult Edit([Bind(Include = "UserId, UserName, UserSex, UserBirthDay, UserMobilePhone, UserApproved, DepartmentId")]UserTable2 _userTable)
+        public ActionResult Edit(訂貨主檔 _Orders)
+        {
+            if (_Orders == null)
+            {   // 沒有輸入內容，就會報錯 - Bad Request
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            if (ModelState.IsValid)
+            {   
+                _db.Entry(_Orders).State = System.Data.Entity.EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return Content(" 更新失敗！！更新失敗！！ ");
+            }
+        }
+    
     }
 }
