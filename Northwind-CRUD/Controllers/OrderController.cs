@@ -35,5 +35,48 @@ namespace Northwind_CRUD.Controllers
         {
             return View(_db.訂貨主檔s.ToList());
         }
+
+        public ActionResult Create()
+        {
+            List<SelectListItem> CustomerID = new List<SelectListItem>();
+            foreach (var m in _db.客戶s)
+            {
+                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號 });
+            }
+            ViewData["客戶編號"] = CustomerID;
+
+            List<SelectListItem> EmployeeID = new List<SelectListItem>();
+            foreach (var m in _db.員工s)
+            {
+                EmployeeID.Add(new SelectListItem { Text = m.姓名.ToString(), Value = m.員工編號.ToString() });
+            }
+            ViewData["員工編號"] = EmployeeID;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]   // 避免 CSRF攻擊，請配合檢視畫面 Html.BeginForm()表單裡的「@Html.AntiForgeryToken()」這一列程式
+        public ActionResult Create(訂貨主檔 _orders)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _db.訂貨主檔s.Add(_orders);
+                _db.SaveChanges();
+                //return Content(" 新增一筆記錄，成功！");    // 新增成功後，出現訊息（字串）。
+                return RedirectToAction("List");
+            }
+            else
+            {   // 需搭配檢視畫面的 @Html.ValidationSummary(true)
+                // 並且 return View() 回到原本的新增畫面上，顯示錯誤訊息！
+                ModelState.AddModelError("", "輸入資料有誤！");
+            }
+            return View();
+
+        }
+
+
+
     }
-}
+ }
