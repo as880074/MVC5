@@ -75,8 +75,46 @@ namespace Northwind_CRUD.Controllers
             return View();
 
         }
+        public ActionResult Delete(int? id=1)
+        {
+            if (id == null)
+            {   // 沒有輸入編號（id），就會報錯 - Bad Request
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
 
+            // 使用上方 Details動作的程式，先列出這一筆的內容，給使用者確認
+            訂貨主檔 od = _db.訂貨主檔s.Find(id);
+
+            if (od == null)
+            {   // 找不到這一筆記錄
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(od);
+            }
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]   //避免 CSRF攻擊，
+        public ActionResult DeleteConfirm(int id)
+        {
+            if (ModelState.IsValid)   // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
+            {
+                訂貨主檔 ut = _db.訂貨主檔s.Find(id);
+                _db.訂貨主檔s.Remove(ut);
+                _db.SaveChanges();
+
+                //return Content(" 刪除一筆記錄，成功！");    // 刪除成功後，出現訊息（字串）。
+                return RedirectToAction("List");
+            }
+            else
+            {   // 搭配 ModelState.IsValid，如果驗證沒過，就出現錯誤訊息。
+                ModelState.AddModelError("Value1", " 刪除失敗 ");
+
+                return View();   // 將錯誤訊息，返回並呈現在「刪除」的檢視畫面上
+            }
+        }
 
 
     }
- }
+}
