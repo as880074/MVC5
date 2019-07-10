@@ -12,10 +12,10 @@
 <table class="table" border= "1">
     <tr>
         <th>
-            @Html.DisplayNameFor(m => m.客戶編號)
+            客戶姓名
         </th>
         <th>
-            @Html.DisplayNameFor(m => m.員工編號)
+           員工姓名
         </th>
         <th>
             @Html.DisplayNameFor(m => m.訂單日期)
@@ -56,10 +56,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.客戶編號)
+            @Html.DisplayFor(modelItem => item.客戶.連絡人)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.員工編號)
+            @Html.DisplayFor(modelItem => item.員工.姓名)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.訂單日期)
