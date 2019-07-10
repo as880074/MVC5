@@ -125,10 +125,10 @@ namespace Northwind_CRUD.Controllers
 
             List<SelectListItem> CustomerID = new List<SelectListItem>();
 
-
+            Boolean SelectedID;
             foreach (var m in _db.客戶s)
             {
-                Boolean SelectedID = false;
+                 SelectedID = false;
                 if (m.客戶編號 == od.客戶編號)
                 {
                     SelectedID = true;
@@ -142,7 +142,7 @@ namespace Northwind_CRUD.Controllers
             List<SelectListItem> EmployeeID = new List<SelectListItem>();
             foreach (var m in _db.員工s)
             {
-                Boolean SelectedID = false;
+                SelectedID = false;
      
                 if (m.員工編號 == od.員工編號)
                 {

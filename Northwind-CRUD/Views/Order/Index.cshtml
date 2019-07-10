@@ -57,7 +57,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.客戶.連絡人)
+            @*@Html.DisplayFor(modelItem => item.客戶.連絡人)*@
+            @Html.ActionLink(item.客戶.連絡人, "Details/" + item.客戶編號, "Client")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.員工.姓名)
