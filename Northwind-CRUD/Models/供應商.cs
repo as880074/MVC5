@@ -18,6 +18,7 @@ namespace Northwind_CRUD.Models
         public int 供應商編號 { get; set; }
 
         [Column("供應商")]
+        [Display(Name ="供應商")]
         [Required]
         [StringLength(40)]
         public string 供應商1 { get; set; }
