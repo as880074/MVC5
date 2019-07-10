@@ -7,7 +7,7 @@ using Northwind_CRUD.Models;
 
 namespace Northwind_CRUD.Controllers
 {
-    public class OrderController : Controller
+    public class ClientController : Controller
     {
         //建立資料庫
         private NorthwindContext _db = new NorthwindContext();
@@ -29,40 +29,26 @@ namespace Northwind_CRUD.Controllers
             Response.Redirect("Index");
             base.HandleUnknownAction(actionName);
         }
-
-        // GET: Order
+        // GET: Client
         public ActionResult Index()
         {
-            return View(_db.訂貨主檔s.ToList());
+            
+            return View(_db.客戶s.ToList());
         }
 
         public ActionResult Create()
         {
-            List<SelectListItem> CustomerID = new List<SelectListItem>();
-            foreach (var m in _db.客戶s)
-            {
-                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號 });
-            }
-            ViewData["客戶編號"] = CustomerID;
-
-            List<SelectListItem> EmployeeID = new List<SelectListItem>();
-            foreach (var m in _db.員工s)
-            {
-                EmployeeID.Add(new SelectListItem { Text = m.姓名.ToString(), Value = m.員工編號.ToString() });
-            }
-            ViewData["員工編號"] = EmployeeID;
-
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]   // 避免 CSRF攻擊，請配合檢視畫面 Html.BeginForm()表單裡的「@Html.AntiForgeryToken()」這一列程式
-        public ActionResult Create(訂貨主檔 _orders)
+        public ActionResult Create(客戶 _customer)
         {
 
             if (ModelState.IsValid)
             {
-                _db.訂貨主檔s.Add(_orders);
+                _db.客戶s.Add(_customer);
                 _db.SaveChanges();
                 //return Content(" 新增一筆記錄，成功！");    // 新增成功後，出現訊息（字串）。
                 return RedirectToAction("List");
@@ -131,7 +117,7 @@ namespace Northwind_CRUD.Controllers
                 var SelectedID = false;
                 if (m.客戶編號 == od.客戶編號)
                     SelectedID = true;
-                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號 , Selected = SelectedID});
+                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號, Selected = SelectedID });
             }
             ViewData["客戶編號"] = CustomerID;
             List<SelectListItem> EmployeeID = new List<SelectListItem>();
@@ -150,8 +136,8 @@ namespace Northwind_CRUD.Controllers
 
 
         //== 修改（更新），回寫資料庫 ===============
-          [HttpPost]
-          [ValidateAntiForgeryToken]   // 避免 CSRF攻擊，
+        [HttpPost]
+        [ValidateAntiForgeryToken]   // 避免 CSRF攻擊，
 
         //public ActionResult Edit([Bind(Include = "UserId, UserName, UserSex, UserBirthDay, UserMobilePhone, UserApproved, DepartmentId")]UserTable2 _userTable)
         public ActionResult Edit(訂貨主檔 _Orders)
@@ -161,7 +147,7 @@ namespace Northwind_CRUD.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
             if (ModelState.IsValid)
-            {   
+            {
                 _db.Entry(_Orders).State = System.Data.Entity.EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("List");

@@ -16,16 +16,19 @@ namespace Northwind_CRUD.Models
 
         [Key]
         public int 訂單號碼 { get; set; }
-
+        [Required]     // 必填欄位
         [StringLength(5)]
         public string 客戶編號 { get; set; }
 
         public int? 員工編號 { get; set; }
-
+        [Required]     // 必填欄位
+        [DataType(DataType.Date)]
         public DateTime? 訂單日期 { get; set; }
-
+        [Required]     // 必填欄位
+        [DataType(DataType.Date)]
         public DateTime? 要貨日期 { get; set; }
-
+        [Required]     // 必填欄位
+        [DataType(DataType.Date)]
         public DateTime? 送貨日期 { get; set; }
 
         public int? 送貨方式 { get; set; }
