@@ -69,15 +69,15 @@ namespace Northwind_CRUD.Controllers
             }
 
             // 使用上方 Details動作的程式，先列出這一筆的內容，給使用者確認
-            訂貨主檔 od = _db.訂貨主檔s.Find(id);
+            客戶 cm = _db.客戶s.Find(id);
 
-            if (od == null)
+            if (cm == null)
             {   // 找不到這一筆記錄
                 return HttpNotFound();
             }
             else
             {
-                return View(od);
+                return View(cm);
             }
         }
         [HttpPost, ActionName("Delete")]
@@ -86,8 +86,8 @@ namespace Northwind_CRUD.Controllers
         {
             if (ModelState.IsValid)   // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
             {
-                訂貨主檔 od = _db.訂貨主檔s.Find(id);
-                _db.訂貨主檔s.Remove(od);
+                客戶 cm = _db.客戶s.Find(id);
+                _db.客戶s.Remove(cm);
                 _db.SaveChanges();
                 //return Content(" 刪除一筆記錄，成功！");    // 刪除成功後，出現訊息（字串）。
                 return RedirectToAction("List");
