@@ -105,7 +105,7 @@ namespace Northwind_CRUD.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            供應商 em = _db.供應商s.Find(id.ToString());
+            供應商 em = _db.供應商s.Find(id);
             return View(em);   // 把這一筆記錄呈現出來。   
         }
 
@@ -133,7 +133,7 @@ namespace Northwind_CRUD.Controllers
             }
         }
 
-        public ActionResult Details(string id)
+        public ActionResult Details(int? id=1)
         {
             if (id == null)
             {   // 沒有輸入編號（id），就會報錯 - Bad Request
@@ -141,15 +141,15 @@ namespace Northwind_CRUD.Controllers
             }
 
             // 使用上方 Details動作的程式，先列出這一筆的內容，給使用者確認
-            客戶 cm = _db.客戶s.Find(id);
+            供應商 em = _db.供應商s.Find(id);
 
-            if (cm == null)
+            if (em == null)
             {   // 找不到這一筆記錄
                 return HttpNotFound();
             }
             else
             {
-                return View(cm);
+                return View(em);
             }
         }
 
