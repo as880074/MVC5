@@ -99,39 +99,15 @@ namespace Northwind_CRUD.Controllers
                 return View();   // 將錯誤訊息，返回並呈現在「刪除」的檢視畫面上
             }
         }
-        public ActionResult Edit(int? id)    // 網址 
+        public ActionResult Edit(string id)    // 網址 
         {
             if (id == null)
             {   // 沒有輸入文章編號（ID），就會報錯 - Bad Request
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            訂貨主檔 od = _db.訂貨主檔s.Find(id);
-
-
-            List<SelectListItem> CustomerID = new List<SelectListItem>();
-
-
-            foreach (var m in _db.客戶s)
-            {
-                var SelectedID = false;
-                if (m.客戶編號 == od.客戶編號)
-                    SelectedID = true;
-                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號, Selected = SelectedID });
-            }
-            ViewData["客戶編號"] = CustomerID;
-            List<SelectListItem> EmployeeID = new List<SelectListItem>();
-            foreach (var m in _db.員工s)
-            {
-                var SelectedID = false;
-                if (m.員工編號 == od.員工編號)
-                    SelectedID = true;
-                EmployeeID.Add(new SelectListItem { Text = m.姓名.ToString(), Value = m.員工編號.ToString(), Selected = SelectedID });
-            }
-            ViewData["員工編號"] = EmployeeID;
-
-
-            return View(od);   // 把這一筆記錄呈現出來。   
+            客戶 cm = _db.客戶s.Find(id.ToString());
+            return View(cm);   // 把這一筆記錄呈現出來。   
         }
 
 

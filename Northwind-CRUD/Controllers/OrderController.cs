@@ -128,18 +128,27 @@ namespace Northwind_CRUD.Controllers
 
             foreach (var m in _db.客戶s)
             {
-                var SelectedID = false;
+                Boolean SelectedID = false;
                 if (m.客戶編號 == od.客戶編號)
+                {
                     SelectedID = true;
-                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號 , Selected = SelectedID});
+                }
+                CustomerID.Add(new SelectListItem { Text = m.連絡人, Value = m.客戶編號, Selected = SelectedID });
             }
             ViewData["客戶編號"] = CustomerID;
+
+            // ViewData["客戶編號"] = new SelectList(_db.客戶s, "客戶編號", "連絡人", _db.客戶s.Where(a => a.客戶編號 == od.客戶編號).First().客戶編號);
+
             List<SelectListItem> EmployeeID = new List<SelectListItem>();
             foreach (var m in _db.員工s)
             {
-                var SelectedID = false;
+                Boolean SelectedID = false;
+     
                 if (m.員工編號 == od.員工編號)
+                {
                     SelectedID = true;
+                }
+
                 EmployeeID.Add(new SelectListItem { Text = m.姓名.ToString(), Value = m.員工編號.ToString(), Selected = SelectedID });
             }
             ViewData["員工編號"] = EmployeeID;
